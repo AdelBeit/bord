@@ -16,7 +16,7 @@ const handlers = {
       Books: 0,
     };
     //   Filter the list by keyword
-    let filteredItems = [];
+    let filteredItems = { Movies: [], Shows: [], Books: [] };
     const filteredList = this.state.defaultItems.filter((item) => {
       const itemInfo = item.fields[searchField].toLowerCase();
       // does item match keyword
@@ -25,7 +25,8 @@ const handlers = {
       // update category lengths based on matched items
       if (filterMatch) {
         categoryItemLengths[itemCategory] += 1;
-        filteredItems.push(itemInfo);
+        filteredItems[itemCategory].push(itemInfo);
+        console.log(filteredItems);
       }
       return filterMatch;
     });
@@ -35,7 +36,7 @@ const handlers = {
       },
       showItemAddButton:
         categoryItemLengths[activeCategory] === 0 &&
-        !filteredItems.includes(searchKey) &&
+        !filteredItems[activeCategory].includes(searchKey) &&
         keyword !== "",
       items: filteredList,
       keyword: keyword,
