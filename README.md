@@ -1,7 +1,7 @@
 # bôrd
 A responsive Tracker for movies/shows/books
 
-You can try it out at bord.netlify.com
+You can try it out at https://bord.netlify.app/
 
 Features:
 - Hotkey support (windows)
