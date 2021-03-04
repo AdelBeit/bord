@@ -22,3 +22,11 @@ Notes:
 - Netlify Function for API key protection
 - Airtable as the Database solution
 - Netlify as the JAMStack hosting solution
+
+
+Planned features: 
+- automatic IMDB lookup
+- allow renaming of lists of different kinds of lists
+- add more lists such as an already watched list
+- allow expansion of cards to include extra details such as personal rating, director, year, genre
+
