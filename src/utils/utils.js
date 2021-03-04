@@ -15,6 +15,7 @@ const handlers = {
       Books: 0,
     };
     //   Filter the list by keyword
+    let filteredItems = [];
     const filteredList = this.state.defaultItems.filter((item) => {
       const itemInfo = item.fields[searchField].toLowerCase();
       const searchKey = keyword.trim().toLowerCase();
@@ -22,7 +23,10 @@ const handlers = {
       const filterMatch = itemInfo.includes(searchKey);
       const itemCategory = item.fields.Category;
       // update category lengths based on matched items
-      if (filterMatch) categoryItemLengths[itemCategory] += 1;
+      if (filterMatch) {
+        categoryItemLengths[itemCategory] += 1;
+        filteredItems.push(item.fields.Title);
+      }
       return filterMatch;
     });
     this.setState({
@@ -30,7 +34,9 @@ const handlers = {
         ...categoryItemLengths,
       },
       showItemAddButton:
-        categoryItemLengths[activeCategory] === 0 && keyword !== "",
+        categoryItemLengths[activeCategory] === 0 &&
+        !filteredItems.includes(keyword) &&
+        keyword !== "",
       items: filteredList,
       keyword: keyword,
     });
