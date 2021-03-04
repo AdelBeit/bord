@@ -1,0 +1,245 @@
+// Globals
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/utilities/borders";
+
+// theme colors
+$BACKGROUND: #1d3557;
+$ACTIVE_TEXT: #1d3557;
+$INACTIVE_TEXT: #f1faee;
+$ACTIVE: #f1faee;
+$INACTIVE: #457b9d;
+$DELETE: #e63947;
+$ADD: #43b929;
+$NORMAL_TEXT: #9ce7e5;
+$NORMAL: #9ce7e5;
+
+.display-inline-block {
+  display: inline-block;
+}
+
+.h-0 {
+  height: 0;
+}
+
+body,
+.login_page,
+html {
+  background-color: $BACKGROUND;
+}
+
+// ---------------- Constants and placeholders ----------------
+%inactive {
+  background-color: $INACTIVE;
+  color: $INACTIVE_TEXT;
+}
+
+$itemColors: (Movies $ACTIVE, Shows $ACTIVE, Books $ACTIVE);
+
+// Utils
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+@mixin top-bottom-left-right($top, $bottom, $left, $right, $units: px) {
+  top: #{$top}#{$units};
+  bottom: #{$bottom}#{$units};
+  left: #{$left}#{$units};
+  right: #{$right}#{$units};
+}
+
+input,
+.card,
+button,
+.card-img {
+  @extend .rounded-0;
+}
+
+// Generate tab and item classes
+// defaults
+.Tab.inactive,
+.ItemCard.complete {
+  @extend %inactive;
+}
+
+@each $item, $value in $itemColors {
+  .Tab.#{$item}.active,
+  .ItemCard.#{$item}.incomplete {
+    background-color: $value;
+  }
+}
+
+// ---------------- Header ----------------
+
+.Header {
+  * {
+    @extend .border-0;
+  }
+
+  .col:last-child,
+  .logout {
+    max-width: 40px;
+    max-height: 100%;
+  }
+  .col:last-child {
+    background-color: $DELETE;
+    :hover {
+      background-color: mix($DELETE, $ACTIVE, 75%) !important;
+    }
+  }
+  .Tab {
+    max-height: 40px;
+    min-height: 40px;
+    text-align: center;
+    display: table;
+    border-left-color: $BACKGROUND !important;
+    border-left-width: 1px !important;
+    border-left-style: solid !important;
+    &:first-child {
+      border-left: none !important;
+    }
+  }
+  .Tab > span {
+    display: table-cell;
+    vertical-align: middle;
+    line-height: normal;
+  }
+}
+
+.object-fit-contain {
+  object-fit: contain;
+}
+
+// ---------------- Search Section ----------------
+#searchForm {
+  height: 40px;
+  border: none;
+}
+
+// ---------------- Item button animations ----------------
+// Constants and placeholders
+.w-0 {
+  width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.w-5 {
+  padding: 0.375rem 0.75rem;
+  width: 40px;
+}
+
+%button-styles {
+  border: none;
+  cursor: pointer;
+}
+
+%transition-button {
+  $transition-time: 0.45s;
+  transition: width $transition-time ease-in-out,
+    padding $transition-time ease-in-out;
+}
+
+.item_add_button {
+  @extend %transition-button;
+  @include top-bottom-left-right(0, 0, auto, 0);
+  @extend %button-styles;
+  overflow: hidden;
+}
+
+.item_delete_button {
+  @include top-bottom-left-right(0, 0, auto, 0);
+  @extend %button-styles;
+  width: 40px;
+  font-size: 1.35em;
+  background-color: $DELETE;
+  &:active,
+  &:hover,
+  &:focus {
+    background-color: mix($DELETE, $ACTIVE, 75%) !important;
+  }
+}
+
+.cursor-normal {
+  cursor: default;
+}
+
+// ---------------- login page ----------------
+
+.login_page {
+  padding-top: 3em;
+  padding-bottom: 2em;
+}
+
+.login_page > Div {
+  margin: 0 auto;
+  background-color: $INACTIVE;
+  padding: 1em 0 4em 0;
+  min-width: 380px;
+  min-height: 380px;
+  max-width: 400px;
+  max-height: 400px;
+}
+
+.login_page .row:last-child {
+  margin-top: 7em;
+}
+
+.App_Title {
+  color: $ACTIVE_TEXT;
+  font-size: 5em;
+}
+
+.login_page .col {
+  text-align: center;
+}
+
+.login_page .row:last-child button {
+  height: 2.25em;
+  width: 8em;
+  font-size: 1.75em;
+  background-color: $INACTIVE;
+  color: $ACTIVE_TEXT;
+  border: solid 3px $ACTIVE_TEXT;
+  &:focus,
+  &:active {
+    background-color: $INACTIVE;
+    color: $INACTIVE_TEXT;
+    border: solid 3px $INACTIVE_TEXT;
+    box-shadow: none !important;
+  }
+}
+
+// remove the clear button ('X') in the search bar
+/* clears the 'X' from Internet Explorer */
+input[type="search"]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+input[type="search"]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* clears the 'X' from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+// disable text selection
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
