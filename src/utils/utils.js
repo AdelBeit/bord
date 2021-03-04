@@ -7,6 +7,7 @@ const handlers = {
    */
   SearchHandler: function (event) {
     const keyword = event ? event.target.value || "" : "";
+    const searchKey = keyword.trim().toLowerCase();
     const searchField = "Title";
     const activeCategory = this.state.activeCategory;
     const categoryItemLengths = {
@@ -18,14 +19,13 @@ const handlers = {
     let filteredItems = [];
     const filteredList = this.state.defaultItems.filter((item) => {
       const itemInfo = item.fields[searchField].toLowerCase();
-      const searchKey = keyword.trim().toLowerCase();
       // does item match keyword
       const filterMatch = itemInfo.includes(searchKey);
       const itemCategory = item.fields.Category;
       // update category lengths based on matched items
       if (filterMatch) {
         categoryItemLengths[itemCategory] += 1;
-        filteredItems.push(item.fields.Title);
+        filteredItems.push(itemInfo);
       }
       return filterMatch;
     });
@@ -35,7 +35,7 @@ const handlers = {
       },
       showItemAddButton:
         categoryItemLengths[activeCategory] === 0 &&
-        !filteredItems.includes(keyword) &&
+        !filteredItems.includes(searchKey) &&
         keyword !== "",
       items: filteredList,
       keyword: keyword,
