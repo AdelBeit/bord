@@ -35,9 +35,7 @@ const handlers = {
         ...categoryItemLengths,
       },
       showItemAddButton:
-        categoryItemLengths[activeCategory] === 0 &&
-        !filteredItems[activeCategory].includes(searchKey) &&
-        keyword !== "",
+        !filteredItems[activeCategory].includes(searchKey) && keyword !== "",
       items: filteredList,
       keyword: keyword,
     });
