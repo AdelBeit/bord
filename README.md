@@ -1,6 +1,8 @@
 # bôrd
 A responsive Tracker for movies/shows/books
 
+You can try it out at bord.netlify.com
+
 Features:
 - Hotkey support (windows)
 - - switch categories: left/right, ctrl+\[ / ]
