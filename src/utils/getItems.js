@@ -20,7 +20,6 @@ export function getItems(searchField = "Title", fieldQuery = "") {
     window.location.origin + "/.netlify/functions/auth-cloak"
   );
 
-  console.log("fetching...");
   /**
    * helper for fetching all items, works with pagination
    */
@@ -29,9 +28,6 @@ export function getItems(searchField = "Title", fieldQuery = "") {
     queryParams.append("filterByFormula", filter);
     if (offset !== "") {
       queryParams.append("offset", offset);
-      console.log("offset detected...");
-    } else {
-      console.log("no offset");
     }
     authCloak.search = queryParams.toString();
     try {
@@ -41,11 +37,9 @@ export function getItems(searchField = "Title", fieldQuery = "") {
       if (!data.records) throw Error("GET from airtable failed");
       // if there is more, recurse, else return
       if (data.offset) {
-        console.log("dealing with offset...");
         const dataRest = await fetchAll(data.offset);
         return [...data.records, ...dataRest];
       } else {
-        console.log("last bit was processed");
         return data.records;
       }
     } catch (error) {

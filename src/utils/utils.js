@@ -19,6 +19,8 @@ const handlers = {
     let filteredItems = { Movies: [], Shows: [], Books: [] };
     const filteredList = this.state.defaultItems.filter((item) => {
       const itemInfo = item.fields[searchField].toLowerCase();
+      console.log(item);
+      console.log(itemInfo);
       // does item match keyword
       const filterMatch = itemInfo.includes(searchKey);
       const itemCategory = item.fields.Category;
@@ -26,7 +28,6 @@ const handlers = {
       if (filterMatch) {
         categoryItemLengths[itemCategory] += 1;
         filteredItems[itemCategory].push(itemInfo);
-        console.log(filteredItems);
       }
       return filterMatch;
     });
