@@ -20,36 +20,67 @@ export function getItems(searchField = "Title", fieldQuery = "") {
     window.location.origin + "/.netlify/functions/auth-cloak"
   );
   authCloak.search = queryParams.toString();
+  console.log("fetching...");
+  /**
+   * helper for fetching all items, works with pagination
+   */
+  async function fetchAll(offset = "") {
+    if (offset !== "") {
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("offset", offset);
+      console.log("offset detected...");
+    }
+    try {
+      let response = await fetch(authCloak, requestOptions);
+      let data = await response.json();
+      // if data is empty throw error
+      if (!data.records) throw Error("GET from airtable failed");
+      // if there is more, recurse, else return
+      if (data.offset) {
+        const dataRest = await fetchAll(data.offset);
+        console.log("dealing with offset...");
+        return [...data.records, ...dataRest];
+      } else {
+        console.log("last bit was processed");
+        return data.records;
+      }
+    } catch (error) {
+      console.error(error);
+      this.setState({
+        loadingMessage: error,
+      });
+    }
+  }
 
-  fetch(authCloak, requestOptions)
-    .then((response) => response.json())
-    .then((records) => {
-      if (!records.records) throw Error("GET from airtable failed");
+  fetchAll()
+    .then((data) => {
+      // process records
       const categoryItemLengths = {
         Movies: 0,
         Shows: 0,
         Books: 0,
       };
-      let recordsArray = [];
-      records.records.map((item) => {
+
+      data.map((item) => {
         const itemCategory = item.fields.Category;
-        recordsArray.push(item);
         // update category lengths
         return (categoryItemLengths[itemCategory] =
           categoryItemLengths[itemCategory] + 1 || 1);
       });
+
       this.setState({
         showItemAddButton:
           categoryItemLengths[this.state.activeCategory] === 0 &&
           this.state.keyword !== "",
         categoryItemLengths: categoryItemLengths,
-        items: recordsArray,
-        defaultItems: recordsArray,
+        items: data,
+        defaultItems: data,
         isFetchingItems: false,
       });
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
       this.setState({
         loadingMessage: error,
       });
