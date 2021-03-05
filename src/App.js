@@ -19,7 +19,7 @@ class App extends Component {
     const { user, isAuthenticated, isLoading } = this.props.auth0;
     this.state = {
       items: [],
-      activeCategory: "Shows",
+      activeCategory: "Movies",
       isFetchingItems: true,
       loadingMessage: "Loading...",
       defaultItems: [],
