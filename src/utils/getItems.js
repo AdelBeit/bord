@@ -4,14 +4,9 @@
  * @param {String} fieldQuery
  * @param {String} maxRecords
  */
-export function getItems(
-  searchField = "Title",
-  fieldQuery = "",
-  maxRecords = 100
-) {
+export function getItems(searchField = "Title", fieldQuery = "") {
   const filter = `REGEX_MATCH(LOWER({${searchField}}),".*${fieldQuery}.*")`;
   const queryParams = new URLSearchParams();
-  queryParams.append("maxRecords", maxRecords);
   queryParams.append("filterByFormula", filter);
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
