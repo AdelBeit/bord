@@ -6,10 +6,10 @@
  */
 export function getItems(searchField = "Title", fieldQuery = "") {
   const filter = `REGEX_MATCH(LOWER({${searchField}}),".*${fieldQuery}.*")`;
-  const queryParams = new URLSearchParams();
-  queryParams.append("filterByFormula", filter);
+
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
+
   let requestOptions = {
     method: "GET",
     headers: myHeaders,
@@ -19,18 +19,21 @@ export function getItems(searchField = "Title", fieldQuery = "") {
   const authCloak = new URL(
     window.location.origin + "/.netlify/functions/auth-cloak"
   );
-  authCloak.search = queryParams.toString();
+
   console.log("fetching...");
   /**
    * helper for fetching all items, works with pagination
    */
   async function fetchAll(offset = "") {
+    const queryParams = new URLSearchParams();
+    queryParams.append("filterByFormula", filter);
     if (offset !== "") {
-      let myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("offset", offset);
+      queryParams.append("offset", offset);
       console.log("offset detected...");
+    } else {
+      console.log("no offset");
     }
+    authCloak.search = queryParams.toString();
     try {
       let response = await fetch(authCloak, requestOptions);
       let data = await response.json();
