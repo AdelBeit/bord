@@ -187,7 +187,6 @@ const utils = {
     });
     this.setState({
       items: updatedItems,
-      defaultItems: updatedItems,
     });
 
     const myHeaders = new Headers();
