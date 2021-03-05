@@ -38,8 +38,8 @@ export function getItems(searchField = "Title", fieldQuery = "") {
       if (!data.records) throw Error("GET from airtable failed");
       // if there is more, recurse, else return
       if (data.offset) {
-        const dataRest = await fetchAll(data.offset);
         console.log("dealing with offset...");
+        const dataRest = await fetchAll(data.offset);
         return [...data.records, ...dataRest];
       } else {
         console.log("last bit was processed");
