@@ -21,7 +21,7 @@ export function getItems(searchField = "Title", fieldQuery = "") {
   );
 
   /**
-   * helper for fetching all items, works with pagination
+   * helper for fetching all items, works with pagination, recursive
    */
   async function fetchAll(offset = "") {
     const queryParams = new URLSearchParams();
@@ -50,27 +50,36 @@ export function getItems(searchField = "Title", fieldQuery = "") {
     }
   }
 
+  // main fetch flow
   fetchAll()
     .then((data) => {
-      // process records
-      const categoryItemLengths = {
-        Movies: 0,
-        Shows: 0,
-        Books: 0,
-      };
+      // holds all item titles in each category
+      const categorizedItems = {};
+      // holds all item details, accessible by item title
+      const itemDetails = {};
 
       data.map((item) => {
         const itemCategory = item.fields.Category;
+        const itemTitle = item.fields.Title;
+        if (!categorizedItems[itemCategory]) {
+          categorizedItems[itemCategory] = [];
+        }
+        categorizedItems[itemCategory].push(item.fields.Title);
+        itemDetails[itemTitle] = item.fields;
+
+        return 0;
+
         // update category lengths
-        return (categoryItemLengths[itemCategory] =
-          categoryItemLengths[itemCategory] + 1 || 1);
+        // return (categoryItemLengths[itemCategory] =
+        //   categoryItemLengths[itemCategory] + 1 || 1);
       });
 
       this.setState({
+        categorizedItems: categorizedItems,
+        itemDetails: itemDetails,
         showItemAddButton:
-          categoryItemLengths[this.state.activeCategory] === 0 &&
+          categorizedItems[this.state.activeCategory].length === 0 &&
           this.state.keyword !== "",
-        categoryItemLengths: categoryItemLengths,
         items: data,
         defaultItems: data,
         isFetchingItems: false,

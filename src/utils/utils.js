@@ -10,43 +10,56 @@ const handlers = {
     const searchKey = keyword.trim().toLowerCase();
     const searchField = "Title";
     const activeCategory = this.state.activeCategory;
-    const categoryItemLengths = {
-      Movies: 0,
-      Shows: 0,
-      Books: 0,
-    };
-    //   Filter the list by keyword
-    let filteredItems = { Movies: [], Shows: [], Books: [] };
-    const filteredList = this.state.defaultItems.filter((item) => {
-      const itemInfo = item.fields[searchField].toLowerCase();
-      console.log(item);
-      console.log(itemInfo);
-      // does item match keyword
-      const filterMatch = itemInfo.includes(searchKey);
-      const itemCategory = item.fields.Category;
-      // update category lengths based on matched items
-      if (filterMatch) {
-        categoryItemLengths[itemCategory] += 1;
-        filteredItems[itemCategory].push(itemInfo);
-      }
-      return filterMatch;
+    // get current category's items
+    const currentItems = this.state.categorizedItems[activeCategory];
+
+    let showItemAddButton = keyword !== "";
+
+    // search current category of items
+    const filteredItems = currentItems.filter((itemTitle) => {
+      const currentItem = itemDetails[itemTitle][searchField].toLowerCase();
+      return currentItem.includes(searchKey);
     });
+
+    showItemAddButton = showItemAddButton && filteredItems.length === 0;
+
+    // obsolete
+    // const categoryItemLengths = {
+    //   Movies: 0,
+    //   Shows: 0,
+    //   Books: 0,
+    // };
+    //   Filter the list by keyword
+    // let filteredItems = { Movies: [], Shows: [], Books: [] };
+    // const filteredList = this.state.defaultItems.filter((item) => {
+    //   const itemInfo = item.fields[searchField].toLowerCase();
+    //   console.log(item);
+    //   console.log(itemInfo);
+    //   // does item match keyword
+    //   const filterMatch = itemInfo.includes(searchKey);
+    //   const itemCategory = item.fields.Category;
+    //   // update category lengths based on matched items
+    //   if (filterMatch) {
+    //     categoryItemLengths[itemCategory] += 1;
+    //     filteredItems[itemCategory].push(itemInfo);
+    //   }
+    //   return filterMatch;
+    // });
     this.setState({
-      categoryItemLengths: {
-        ...categoryItemLengths,
-      },
-      showItemAddButton:
-        !filteredItems[activeCategory].includes(searchKey) && keyword !== "",
-      items: filteredList,
+      // categoryItemLengths: {
+      //   ...categoryItemLengths,
+      // },
+      showItemAddButton: showItemAddButton,
+      items: filteredItems,
       keyword: keyword,
     });
   },
   CategorySelectionHandler: function (event) {
     const newActiveCategory = event.currentTarget.textContent;
     this.setState({
-      showItemAddButton:
-        this.state.categoryItemLengths[newActiveCategory] === 0 &&
-        this.state.keyword !== "",
+      // showItemAddButton:false
+      // this.state.categorizedItems[newActiveCategory] === 0 &&
+      // this.state.keyword !== "",
       activeCategory: newActiveCategory,
       currentItemIndex: -1,
     });
@@ -94,7 +107,7 @@ const hotKeyHandlers = {
     }
     let currentIndex = this.state.currentItemIndex;
     let maxIndex =
-      this.state.categoryItemLengths[this.state.activeCategory] - 1;
+      this.state.categorizedItems[this.state.activeCategory].length - 1;
     let newIndex = currentIndex + 1;
     if (currentIndex >= maxIndex) {
       newIndex = 0;
@@ -111,12 +124,13 @@ const hotKeyHandlers = {
 
     let newIndex = currentIndex - 1;
     if (newIndex < minIndex) {
-      newIndex = this.state.categoryItemLengths[this.state.activeCategory] - 1;
+      newIndex =
+        this.state.categorizedItems[this.state.activeCategory].length - 1;
     }
     this.setState({ currentItemIndex: newIndex });
   },
   CATEGORY_LEFT: function (event) {
-    let categories = Object.keys(this.state.categoryItemLengths);
+    let categories = Object.keys(this.state.categorizedItems);
     let currentIndex = categories.indexOf(this.state.activeCategory);
     let minIndex = 0;
     let newIndex = currentIndex - 1;
@@ -126,13 +140,13 @@ const hotKeyHandlers = {
     let newActiveCategory = categories[newIndex];
     this.setState({
       activeCategory: newActiveCategory,
-      showItemAddButton:
-        this.state.categoryItemLengths[newActiveCategory] === 0 &&
-        this.state.keyword !== "",
+      // showItemAddButton:
+      //   this.state.categoryItemLengths[newActiveCategory] === 0 &&
+      //   this.state.keyword !== "",
     });
   },
   CATEGORY_RIGHT: function (event) {
-    let categories = Object.keys(this.state.categoryItemLengths);
+    let categories = Object.keys(this.state.categorizedItems);
     let currentIndex = categories.indexOf(this.state.activeCategory);
     let maxIndex = categories.length;
     let newIndex = currentIndex + 1;
@@ -142,9 +156,9 @@ const hotKeyHandlers = {
     let newActiveCategory = categories[newIndex];
     this.setState({
       activeCategory: newActiveCategory,
-      showItemAddButton:
-        this.state.categoryItemLengths[newActiveCategory] === 0 &&
-        this.state.keyword !== "",
+      // showItemAddButton:
+      //   this.state.categoryItemLengths[newActiveCategory] === 0 &&
+      //   this.state.keyword !== "",
     });
   },
 };
