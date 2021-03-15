@@ -11,7 +11,8 @@ import { utils } from "../utils/utils";
 
 /**
  * List of items
- * @param {Array} items: list of items to show
+ * @param {Array} items: list of item titles to show
+ * @param {Array} itemDetails: list of items and their details, accessible by title
  * @param {Boolean} isFetchingItems: whether or not items are being fetched currently
  * @param {String} activeCategory: category of items to show
  * @param {String} loadingMessage: what to show while loading list
@@ -23,6 +24,7 @@ const ItemList = React.forwardRef(
   (
     {
       items,
+      itemDetails,
       isFetchingItems,
       activeCategory,
       loadingMessage,
@@ -46,15 +48,12 @@ const ItemList = React.forwardRef(
 
     // filter and sort items when changing tabs or when items is modified
     useEffect(() => {
-      let newItems = items.filter((item) => {
-        return item.fields.Category === activeCategory;
-      });
-      newItems.sort(
-        (a, b) =>
-          utils.stringToBool(a.fields.Completed) -
-          utils.stringToBool(b.fields.Completed)
+      items.sort(
+        (titleA, titleB) =>
+          utils.stringToBool(itemDetails[titleA].fields.Completed) -
+          utils.stringToBool(itemDetails[titleB].fields.Completed)
       );
-      setItems(newItems);
+      setItems(items);
     }, [activeCategory, items]);
 
     return (
@@ -64,18 +63,18 @@ const ItemList = React.forwardRef(
             <Col className="text-white">{loadingMessage}</Col>
           </Row>
         ) : (
-          sortedItems.map((item) => {
+          sortedItems.map((title) => {
             currentItem += 1;
             return (
-              <Row key={item.id}>
+              <Row key={itemDetails[title].id}>
                 <Col>
                   <ItemCard
                     ref={currentItem === currentItemIndex ? ref : fakeRef}
-                    title={item.fields.Title}
-                    isComplete={item.fields.Completed === "true"}
+                    title={title}
+                    isComplete={itemDetails[title].Completed === "true"}
                     toggleComplete={toggleComplete}
                     category={activeCategory}
-                    id={item.id}
+                    id={itemDetails[title].id}
                     removeItem={removeItem}
                     shouldFocus={currentItem === currentItemIndex}
                   />

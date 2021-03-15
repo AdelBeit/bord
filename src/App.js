@@ -85,6 +85,8 @@ class App extends Component {
         currentItemIndex={this.state.currentItemIndex}
         isFetchingItems={this.state.isFetchingItems}
         loadingMessage={this.state.loadingMessage}
+        items={this.state.items}
+        itemDetails={this.state.itemDetails}
         CategorySelectionHandler={this.handlers.CategorySelectionHandler}
         SearchHandler={this.handlers.SearchHandler}
         AddItemHandler={this.handlers.AddItemHandler}
@@ -92,7 +94,6 @@ class App extends Component {
         RemoveItemHandler={this.handlers.RemoveItemHandler}
         searchBarRef={this.searchBarRef}
         currentItemRef={this.currentItemRef}
-        items={this.state.items}
         pleaseWait={this.utils.pleaseWait}
       />
     ) : (

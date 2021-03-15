@@ -66,6 +66,7 @@ export function getItems(searchField = "Title", fieldQuery = "") {
         }
         categorizedItems[itemCategory].push(item.fields.Title);
         itemDetails[itemTitle] = item.fields;
+        itemDetails[itemTitle]["id"] = item.id;
 
         return 0;
 
@@ -80,7 +81,7 @@ export function getItems(searchField = "Title", fieldQuery = "") {
         showItemAddButton:
           categorizedItems[this.state.activeCategory].length === 0 &&
           this.state.keyword !== "",
-        items: data,
+        items: categorizedItems[this.state.activeCategory],
         defaultItems: data,
         isFetchingItems: false,
       });

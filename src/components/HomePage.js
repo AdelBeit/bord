@@ -22,6 +22,7 @@ const HomePage = ({
   searchBarRef,
   currentItemRef,
   items,
+  categorizedItems,
   pleaseWait,
 }) => {
   return (
@@ -46,6 +47,7 @@ const HomePage = ({
           ref={currentItemRef}
           currentItemIndex={currentItemIndex}
           items={items}
+          itemDetails={itemDetails}
           isFetchingItems={isFetchingItems}
           activeCategory={activeCategory}
           loadingMessage={loadingMessage}
