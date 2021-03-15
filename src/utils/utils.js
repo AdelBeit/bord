@@ -17,7 +17,9 @@ const handlers = {
 
     // search current category of items
     const filteredItems = currentItems.filter((itemTitle) => {
-      const currentItem = itemDetails[itemTitle][searchField].toLowerCase();
+      const currentItem = this.state.itemDetails[itemTitle][
+        searchField
+      ].toLowerCase();
       return currentItem.includes(searchKey);
     });
 
