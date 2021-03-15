@@ -85,7 +85,7 @@ class App extends Component {
         currentItemIndex={this.state.currentItemIndex}
         isFetchingItems={this.state.isFetchingItems}
         loadingMessage={this.state.loadingMessage}
-        items={this.state.items}
+        items={this.state.items[this.state.activeCategory]}
         itemDetails={this.state.itemDetails}
         CategorySelectionHandler={this.handlers.CategorySelectionHandler}
         SearchHandler={this.handlers.SearchHandler}
