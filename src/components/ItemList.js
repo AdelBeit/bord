@@ -50,8 +50,8 @@ const ItemList = React.forwardRef(
     useEffect(() => {
       items.sort(
         (titleA, titleB) =>
-          utils.stringToBool(itemDetails[titleA].fields.Completed) -
-          utils.stringToBool(itemDetails[titleB].fields.Completed)
+          utils.stringToBool(itemDetails[titleA].Completed) -
+          utils.stringToBool(itemDetails[titleB].Completed)
       );
       setItems(items);
     }, [activeCategory, items]);
