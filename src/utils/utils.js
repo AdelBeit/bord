@@ -14,6 +14,8 @@ const handlers = {
     const currentItems = this.state.categorizedItems[activeCategory];
 
     let showItemAddButton = keyword !== "";
+    console.log(" hi there");
+    console.log(filteredItems);
 
     // search current category of items
     const filteredItems = currentItems.filter((itemTitle) => {
@@ -23,6 +25,10 @@ const handlers = {
       return currentItem.includes(searchKey);
     });
 
+    console.log(activeCategory);
+    console.log(currentItems);
+    console.log(filteredItems);
+    console.log("hey we done");
     showItemAddButton = showItemAddButton && filteredItems.length === 0;
 
     // obsolete
