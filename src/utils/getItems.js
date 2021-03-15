@@ -50,6 +50,51 @@ export function getItems(searchField = "Title", fieldQuery = "") {
     }
   }
 
+  let temp_categorizedItems = {
+    Movies: [
+      "Youth in Revolt",
+      "When in Rome",
+      "What Happens in Vegas",
+      "Water For Elephants",
+    ],
+  };
+  let temp_itemDetails = {
+    "Youth in Revolt": {
+      Title: "Youth in Revolt",
+      Category: "Movies",
+      Completed: "true",
+      id: "2",
+    },
+    "When in Rome": {
+      Title: "When in Rome",
+      Category: "Movies",
+      Completed: "true",
+      id: "3",
+    },
+    "What Happens in Vegas": {
+      Title: "What Happens in Vegas",
+      Category: "Movies",
+      Completed: "false",
+      id: "5",
+    },
+    "Water For Elephants": {
+      Title: "Water For Elephants",
+      Category: "Movies",
+      Completed: "true",
+      id: "7",
+    },
+  };
+
+  // this.setState({
+  //   categorizedItems: temp_categorizedItems,
+  //   itemDetails: temp_itemDetails,
+  //   showItemAddButton:
+  //     temp_categorizedItems[this.state.activeCategory].length === 0 &&
+  //     this.state.keyword !== "",
+  //   items: temp_categorizedItems[this.state.activeCategory],
+  //   isFetchingItems: false,
+  // });
+
   // main fetch flow
   fetchAll()
     .then((data) => {
