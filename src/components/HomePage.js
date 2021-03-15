@@ -22,7 +22,7 @@ const HomePage = ({
   searchBarRef,
   currentItemRef,
   items,
-  categorizedItems,
+  itemDetails,
   pleaseWait,
 }) => {
   return (
