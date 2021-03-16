@@ -48,6 +48,8 @@ const ItemList = React.forwardRef(
 
     // filter and sort items when changing tabs or when items is modified
     useEffect(() => {
+      console.log("use effect ran");
+      console.log(items);
       items.sort(
         (titleA, titleB) =>
           utils.stringToBool(itemDetails[titleA].Completed) -
