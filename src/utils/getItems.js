@@ -50,7 +50,7 @@ export function getItems(searchField = "Title", fieldQuery = "") {
     }
   }
 
-  let temp_categorizedItems = {
+  let temp_categorizedTitles = {
     Movies: [
       "Youth in Revolt",
       "When in Rome",
@@ -99,21 +99,19 @@ export function getItems(searchField = "Title", fieldQuery = "") {
   fetchAll()
     .then((data) => {
       // holds all item titles in each category
-      const categorizedItems = {};
+      const categorizedTitles = {};
       // holds all item details, accessible by item title
       const itemDetails = {};
 
       data.map((item) => {
         const itemCategory = item.fields.Category;
         const itemTitle = item.fields.Title;
-        if (!categorizedItems[itemCategory]) {
-          categorizedItems[itemCategory] = [];
+        if (!categorizedTitles[itemCategory]) {
+          categorizedTitles[itemCategory] = [];
         }
-        categorizedItems[itemCategory].push(item.fields.Title);
+        categorizedTitles[itemCategory].push(item.fields.Title);
         itemDetails[itemTitle] = item.fields;
         itemDetails[itemTitle]["id"] = item.id;
-
-        return 0;
 
         // update category lengths
         // return (categoryItemLengths[itemCategory] =
@@ -121,13 +119,12 @@ export function getItems(searchField = "Title", fieldQuery = "") {
       });
 
       this.setState({
-        categorizedItems: categorizedItems,
         itemDetails: itemDetails,
         showItemAddButton:
-          categorizedItems[this.state.activeCategory].length === 0 &&
+          categorizedTitles[this.state.activeCategory].length === 0 &&
           this.state.keyword !== "",
-        items: categorizedItems[this.state.activeCategory],
-        defaultItems: data,
+        items: categorizedTitles[this.state.activeCategory],
+        defaultItems: categorizedTitles,
         isFetchingItems: false,
       });
     })

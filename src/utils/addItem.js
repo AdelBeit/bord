@@ -18,14 +18,18 @@ export function addItem(fields) {
    * Helper util, adds the newly pushed item into the current state to avoid fetching the whole table from airtable
    */
   const addNewItem = (id) => {
-    const newItems = this.state.defaultItems;
-    const newItem = { id: id, fields: fields };
-    newItems.unshift(newItem);
+    const categorizedTitles = this.state.defaultItems;
+    console.log({ ...fields });
+    this.state.itemDetails[fields.Title] = fields;
+    this.state.itemDetails[fields.Title]["id"] = id;
+
+    categorizedTitles[this.state.activeCategory].unshift(fields.Title);
     this.setState({
       isFetchingItems: false,
-      items: newItems,
-      defaultItems: newItems,
+      items: categorizedTitles[this.state.activeCategory],
+      defaultItems: categorizedTitles,
       keyword: "",
+      itemDetails: this.state.itemDetails[fields.Title],
     });
     this.handlers.SearchHandler();
   };

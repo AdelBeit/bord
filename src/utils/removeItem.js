@@ -17,9 +17,11 @@ export function removeItem(id) {
    * Helper util, removes the newly deleted item from the current state to avoid fetching the whole table from airtable
    */
   const removeCurrentItem = (id) => {
-    const newItems = this.state.defaultItems.filter((item) => {
-      return item.id !== id;
-    });
+    const newItems = this.state.defaultItems[this.state.activeCategory].filter(
+      (item) => {
+        return item.id !== id;
+      }
+    );
     this.setState({ items: newItems, defaultItems: newItems, keyword: "" });
     this.handlers.SearchHandler();
   };
@@ -34,6 +36,8 @@ export function removeItem(id) {
       return response.json();
     })
     .then((records) => {
+      console.log("deleted: ");
+      console.log(records);
       removeCurrentItem(id);
     })
     .catch((err) => console.error(err));
